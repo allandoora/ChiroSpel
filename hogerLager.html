@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hoger Lager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f39c12; color: white; }
+        .card { background: white; color: black; font-size: 80px; width: 150px; padding: 40px; border-radius: 15px; margin: 20px auto; box-shadow: 0 10px 0 #d35400; }
+        button { padding: 15px 30px; font-size: 20px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background: #2c3e50; color: white; }
+    </style>
+</head>
+<body>
+<h1>Hoger of Lager?</h1>
+<p>Huidig getal:</p>
+<div class="card" id="card">?</div>
+<button onclick="guess('higher')">HOGER ↑</button>
+<button onclick="guess('lower')">LAGER ↓</button>
+<p id="msg">Start het spel!</p>
+<p>Score: <span id="score">0</span></p>
+
+<script>
+    let currentNum = Math.floor(Math.random() * 13) + 1;
+    let score = 0;
+    document.getElementById('card').innerText = currentNum;
+
+    function guess(choice) {
+        let nextNum = Math.floor(Math.random() * 13) + 1;
+        let msg = document.getElementById('msg');
+
+        if ((choice === 'higher' && nextNum >= currentNum) || (choice === 'lower' && nextNum <= currentNum)) {
+            score++;
+            msg.innerText = "Goed! Het was " + nextNum;
+            msg.style.color = "green";
+        } else {
+            score = 0;
+            msg.innerText = "Helaas! Het was " + nextNum;
+            msg.style.color = "red";
+        }
+
+        currentNum = nextNum;
+        document.getElementById('card').innerText = currentNum;
+        document.getElementById('score').innerText = score;
+    }
+</script>
+</body>
+</html>

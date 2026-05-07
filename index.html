@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeugdbeweging Game Portaal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { margin-bottom: 10px; }
+        p { color: #bdc3c7; margin-bottom: 30px; }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: transform 0.2s, background 0.2s;
+            border: 2px solid #1abc9c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-card:active {
+            transform: scale(0.95);
+            background: #1abc9c;
+        }
+
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎮 Game Portaal</h1>
+<p>Kies een spel en versla de score!</p>
+
+<div class="menu-container">
+    <!-- Zorg dat de href-namen exact kloppen met je bestandsnamen -->
+
+    <a href="pong.html" class="game-card">
+        <span class="icon">🏓</span>
+        <span>Ping Pong</span>
+    </a>
+
+    <a href="snake.html" class="game-card">
+        <span class="icon">🐍</span>
+        <span>Snake</span>
+    </a>
+
+    <a href="galgje.html" class="game-card">
+        <span class="icon">😵</span>
+        <span>Galgje</span>
+    </a>
+
+    <a href="sudoku.html" class="game-card">
+        <span class="icon">🧩</span>
+        <span>Sudoku</span>
+    </a>
+
+    <a href="hogerLager.html" class="game-card">
+        <span class="icon">🃏</span>
+        <span>Hoger Lager</span>
+    </a>
+
+    <a href="raadspel.html" class="game-card">
+        <span class="icon">🔢</span>
+        <span>Getal Raden</span>
+    </a>
+</div>
+
+<footer>
+    Gemaakt voor de leukste jeugdbeweging van 't land!
+</footer>
+
+</body>
+</html>
