@@ -1,0 +1,442 @@
+/* ===========================
+   RESET & BASE
+=========================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --yellow: #f7e03c;
+    --orange: #f76c1c;
+    --red: #e8243c;
+    --green: #2dce6a;
+    --blue: #1c8cf7;
+    --gray: #2a2a2a;
+    --gray-light: #3d3d3d;
+    --font-display: 'Bungee', cursive;
+    --font-body: 'Space Mono', monospace;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ===========================
+   BACKGROUND GRID
+=========================== */
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+            linear-gradient(rgba(247, 224, 60, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(247, 224, 60, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===========================
+   LAYOUT
+=========================== */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: 1.25rem;
+}
+
+.label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--yellow);
+    display: block;
+    margin-bottom: 0.4rem;
+    opacity: 0.7;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1;
+    color: var(--white);
+    letter-spacing: 0.02em;
+}
+
+h1 em {
+    font-style: normal;
+    color: var(--yellow);
+    display: block;
+}
+
+.range-badge {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    background: var(--yellow);
+    color: var(--black);
+    padding: 0.35rem 0.75rem;
+    border-radius: 2px;
+    white-space: nowrap;
+}
+
+/* ===========================
+   GAME AREA
+=========================== */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ===========================
+   FEEDBACK PANEL
+=========================== */
+.feedback-panel {
+    background: var(--gray);
+    border: 2px solid var(--gray-light);
+    border-radius: 4px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+    transition: border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--yellow);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.feedback-panel.active::before {
+    transform: scaleX(1);
+}
+
+.feedback-panel.too-low { border-color: var(--blue); }
+.feedback-panel.too-low::before { background: var(--blue); }
+
+.feedback-panel.too-high { border-color: var(--red); }
+.feedback-panel.too-high::before { background: var(--red); }
+
+.feedback-panel.correct { border-color: var(--green); }
+.feedback-panel.correct::before { background: var(--green); }
+
+.feedback-icon {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--yellow);
+    transition: all 0.3s ease;
+}
+
+.feedback-panel.too-low  .feedback-icon { color: var(--blue); }
+.feedback-panel.too-high .feedback-icon { color: var(--red); }
+.feedback-panel.correct  .feedback-icon { color: var(--green); }
+
+.feedback-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.feedback-sub {
+    font-size: 0.75rem;
+    color: rgba(245, 240, 232, 0.5);
+    font-style: italic;
+}
+
+/* ===========================
+   GUESS HISTORY
+=========================== */
+.guess-history {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.guess-chip {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    border: 1px solid;
+    animation: chipIn 0.25s ease forwards;
+}
+
+.guess-chip.low  { background: rgba(28, 140, 247, 0.15); border-color: var(--blue); color: var(--blue); }
+.guess-chip.high { background: rgba(232, 36, 60, 0.15);  border-color: var(--red);  color: var(--red); }
+.guess-chip.win  { background: rgba(45, 206, 106, 0.2);  border-color: var(--green); color: var(--green); }
+
+@keyframes chipIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ===========================
+   INPUT ROW
+=========================== */
+.input-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+input[type="number"] {
+    flex: 1;
+    background: var(--gray);
+    border: 2px solid var(--gray-light);
+    border-radius: 4px;
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    display: none;
+}
+
+input[type="number"]:focus {
+    border-color: var(--yellow);
+}
+
+input[type="number"]::placeholder {
+    color: var(--gray-light);
+}
+
+button#guessBtn {
+    background: var(--yellow);
+    border: 2px solid var(--yellow);
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: background 0.15s, transform 0.1s;
+}
+
+button#guessBtn:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+}
+
+button#guessBtn:active {
+    transform: scale(0.96);
+}
+
+button#guessBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===========================
+   STATS
+=========================== */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.stat {
+    background: var(--gray);
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: rgba(245, 240, 232, 0.4);
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--yellow);
+}
+
+/* ===========================
+   RESET BUTTON
+=========================== */
+.reset-btn {
+    align-self: center;
+    background: transparent;
+    border: 2px solid var(--gray-light);
+    color: rgba(245, 240, 232, 0.5);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+/* ===========================
+   WIN OVERLAY
+=========================== */
+.win-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.win-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.win-card {
+    background: var(--gray);
+    border: 2px solid var(--green);
+    border-radius: 6px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 360px;
+    width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.win-overlay.show .win-card {
+    transform: translateY(0);
+}
+
+.win-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--green);
+}
+
+.win-number {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.win-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--white);
+}
+
+.win-card p {
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.6);
+    font-style: italic;
+}
+
+#playAgainBtn {
+    margin-top: 0.5rem;
+    background: var(--green);
+    border: none;
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+#playAgainBtn:hover { opacity: 0.85; }
+#playAgainBtn:active { transform: scale(0.96); }
+
+/* ===========================
+   SHAKE ANIMATION
+=========================== */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-8px); }
+    40%       { transform: translateX(8px); }
+    60%       { transform: translateX(-5px); }
+    80%       { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 480px) {
+    h1 { font-size: 2rem; }
+    .win-number { font-size: 4rem; }
+    input[type="number"] { font-size: 1.3rem; }
+}

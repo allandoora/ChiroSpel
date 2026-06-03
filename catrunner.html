@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>Cat Runner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/catrunner.css"/>
+</head>
+<body>
+<div id="wrapper">
+    <h1 id="title">🐱 CAT RUNNER</h1>
+
+    <div id="game-container">
+        <canvas id="gameCanvas" width="900" height="380"></canvas>
+
+        <div id="overlay" class="visible">
+            <p id="overlay-title">CAT RUNNER</p>
+            <p id="overlay-sub">Druk op <span class="key">SPATIE</span> of <span class="key">↑</span> om te starten</p>
+            <p id="overlay-sub2">📱 Tik om te springen · Veeg omlaag om te ducken</p>
+        </div>
+
+        <button id="duck-btn" aria-label="Duck">⬇ DUCK</button>
+    </div>
+
+    <div id="hud">
+        <span>SCORE: <strong id="score-display">0</strong></span>
+        <span>HIGHSCORE: <strong id="hi-display">0</strong></span>
+        <span id="speed-display">SNELHEID: <strong>1x</strong></span>
+    </div>
+</div>
+
+<script src="js/catrunner.js"></script>
+</body>
+</html>

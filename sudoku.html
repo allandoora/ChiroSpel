@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sudoku</title>
+  <link rel="stylesheet" href="css/sudoku.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-sub">dagelijks</span>
+      <h1 class="brand-title">SUDO<br/>KU</h1>
+      <span class="brand-edition">No. 001</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="meta-block">
+      <div class="meta-item">
+        <span class="meta-label">Moeilijkheid</span>
+        <div class="difficulty-btns">
+          <button class="diff-btn active" data-diff="easy">Makkelijk</button>
+          <button class="diff-btn" data-diff="medium">Normaal</button>
+          <button class="diff-btn" data-diff="hard">Moeilijk</button>
+        </div>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Tijd</span>
+        <span class="meta-value" id="timer">00:00</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Fouten</span>
+        <span class="meta-value" id="mistakes">0 / 3</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="numpad" id="numpad">
+      <button class="num-btn" data-num="1">1</button>
+      <button class="num-btn" data-num="2">2</button>
+      <button class="num-btn" data-num="3">3</button>
+      <button class="num-btn" data-num="4">4</button>
+      <button class="num-btn" data-num="5">5</button>
+      <button class="num-btn" data-num="6">6</button>
+      <button class="num-btn" data-num="7">7</button>
+      <button class="num-btn" data-num="8">8</button>
+      <button class="num-btn" data-num="9">9</button>
+      <button class="num-btn erase-btn" data-num="0">⌫</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="action-btns">
+      <button class="action-btn hint-btn" id="hintBtn">💡 Hint</button>
+      <button class="action-btn new-btn"  id="newBtn">Nieuw Spel</button>
+    </div>
+
+    <div class="hints-left" id="hintsLeft">3 hints over</div>
+  </aside>
+
+  <main class="board-area">
+    <div class="board-container">
+      <div class="board" id="board"></div>
+    </div>
+  </main>
+
+</div>
+
+<!-- Win modal -->
+<div class="modal-overlay" id="winModal">
+  <div class="modal-card">
+    <div class="modal-icon">✦</div>
+    <h2>Opgelost!</h2>
+    <p id="winTime"></p>
+    <p id="winMistakes"></p>
+    <button id="modalNewBtn">Nieuw Spel</button>
+  </div>
+</div>
+
+<!-- Game Over modal -->
+<div class="modal-overlay" id="loseModal">
+  <div class="modal-card lose">
+    <div class="modal-icon">✕</div>
+    <h2>Game Over</h2>
+    <p>3 fouten gemaakt. Probeer opnieuw!</p>
+    <button id="modalRetryBtn">Opnieuw Proberen</button>
+  </div>
+</div>
+
+<script src="js/sudoku.js"></script>
+</body>
+</html>

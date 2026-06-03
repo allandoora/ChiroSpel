@@ -1,0 +1,84 @@
+const canvas = document.getElementById("pong");
+const ctx = canvas.getContext("2d");
+
+const INITIAL_SPEED = 4;
+const SPEED_INCREMENT = 0.5;
+
+const user = { x: 0, y: 150, width: 10, height: 100, score: 0, color: "#00ff00" };
+const ai   = { x: 590, y: 150, width: 10, height: 100, score: 0, color: "#00ff00" };
+const ball = { x: 300, y: 200, radius: 8, speed: INITIAL_SPEED, velocityX: INITIAL_SPEED, velocityY: INITIAL_SPEED, color: "#fff" };
+
+function handleMove(e) {
+    let rect = canvas.getBoundingClientRect();
+    let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    user.y = clientY - rect.top - user.height / 2;
+    if (e.touches) e.preventDefault();
+}
+
+canvas.addEventListener("mousemove", handleMove);
+canvas.addEventListener("touchmove", handleMove, { passive: false });
+
+function update() {
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
+
+    let targetY = ball.y - ai.height / 2;
+    ai.y += (targetY - ai.y) * 0.04;
+
+    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        ball.velocityY = -ball.velocityY;
+    }
+
+    let player = (ball.x < canvas.width / 2) ? user : ai;
+    if (collision(ball, player)) {
+        let collidePoint = (ball.y - (player.y + player.height / 2)) / (player.height / 2);
+        let angle = (Math.PI / 4) * collidePoint;
+        let direction = (ball.x < canvas.width / 2) ? 1 : -1;
+
+        ball.speed += SPEED_INCREMENT;
+        ball.velocityX = direction * ball.speed * Math.cos(angle);
+        ball.velocityY = ball.speed * Math.sin(angle);
+    }
+
+    if (ball.x < 0)            { ai.score++;   resetBall(); }
+    if (ball.x > canvas.width) { user.score++; resetBall(); }
+}
+
+function resetBall() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+    ball.speed = INITIAL_SPEED;
+    ball.velocityX = (Math.random() > 0.5 ? 1 : -1) * INITIAL_SPEED;
+    ball.velocityY = (Math.random() > 0.5 ? 1 : -1) * INITIAL_SPEED;
+}
+
+function collision(b, p) {
+    return b.x + b.radius > p.x &&
+        b.x - b.radius < p.x + p.width &&
+        b.y + b.radius > p.y &&
+        b.y - b.radius < p.y + p.height;
+}
+
+function draw() {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "30px Arial";
+    ctx.fillText(user.score, canvas.width / 4, 50);
+    ctx.fillText(ai.score, 3 * canvas.width / 4, 50);
+
+    ctx.fillStyle = user.color;
+    ctx.fillRect(user.x, user.y, user.width, user.height);
+
+    ctx.fillStyle = ai.color;
+    ctx.fillRect(ai.x, ai.y, ai.width, ai.height);
+
+    ctx.fillStyle = ball.color;
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function loop() { update(); draw(); requestAnimationFrame(loop); }
+loop();
