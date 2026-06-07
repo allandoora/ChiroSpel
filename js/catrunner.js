@@ -36,7 +36,7 @@ let state         = 'idle';
 let score         = 0;
 let hiScore       = parseInt(localStorage.getItem('catHiScore') || '0', 10);
 let frame         = 0;
-let speed         = 2.5;
+let speed         = 3.5;
 let animId        = null;
 let lastMilestone = 0;
 const bonusTexts  = [];
@@ -486,7 +486,7 @@ function drawHUD() {
 // ── Main game loop ────────────────────────────────────────────────────────────
 function gameLoop() {
     frame++;
-    speed = 2.5 + score / 400;
+    speed = 2.5 + score / 300;
     speedEl.textContent = speed.toFixed(1) + 'x';
 
     updateClouds();
