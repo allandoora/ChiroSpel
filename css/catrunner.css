@@ -85,6 +85,8 @@ body::before {
     display: block;
     width: 100%;
     image-rendering: pixelated;
+    touch-action: none;  /* FIX: voorkomt dat de browser touch-events inpikt */
+    cursor: pointer;
 }
 
 /* Scanlines */
@@ -117,6 +119,7 @@ body::before {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    cursor: pointer;  /* FIX: laat zien dat de overlay klikbaar is */
 }
 
 #overlay.visible {

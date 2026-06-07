@@ -41,42 +41,22 @@ let animId        = null;
 let lastMilestone = 0;
 const bonusTexts  = [];
 
-// ── Web Audio sounds (no external files needed) ───────────────────────────────
-let audioCtx = null;
-
-function getAudio() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    return audioCtx;
-}
-
-function beep(freq, dur, type = 'square', vol = 0.15) {
-    try {
-        const ac = getAudio();
-        const o  = ac.createOscillator();
-        const g  = ac.createGain();
-        o.connect(g);
-        g.connect(ac.destination);
-        o.type = type;
-        o.frequency.value = freq;
-        g.gain.setValueAtTime(vol, ac.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
-        o.start();
-        o.stop(ac.currentTime + dur);
-    } catch (e) {}
-}
-
-const sounds = {
-    jump:      new Audio("../sounds/jump.mp3"),
-    death:     new Audio("../sounds/death.mp3"),
-    mouse:     new Audio("../sounds/mouse.mp3"),
-    milestone: new Audio("../sounds/milestone.mp3"),
-};
+// ── Web Audio sounds ──────────────────────────────────────────────────────────
+const sounds = {};
+try {
+    sounds.jump      = new Audio("../sounds/jump.mp3");
+    sounds.death     = new Audio("../sounds/death.mp3");
+    sounds.mouse     = new Audio("../sounds/mouse.mp3");
+    sounds.milestone = new Audio("../sounds/milestone.mp3");
+} catch(e) {}
 
 function playSound(name) {
-    const s = sounds[name];
-    if (!s) return;
-    s.currentTime = 0;
-    s.play().catch(() => {});
+    try {
+        const s = sounds[name];
+        if (!s) return;
+        s.currentTime = 0;
+        s.play().catch(() => {});
+    } catch(e) {}
 }
 
 // ── Cat ───────────────────────────────────────────────────────────────────────
@@ -281,7 +261,6 @@ function drawMouse(o) {
     ctx.fillRect(x - 6,  yy + 12, 8,  3);
     ctx.fillRect(x - 10, yy + 6,  6,  3);
 
-    // Golden star glow — signals collectible
     ctx.fillStyle   = C.bonus;
     ctx.globalAlpha = 0.55 + 0.45 * Math.sin(o.wobble * 2);
     ctx.fillRect(x + 14, yy - 10, 5,  5);
@@ -489,7 +468,7 @@ function checkCollision() {
                 obstacles.splice(i, 1);
                 continue;
             }
-            return true; // deadly obstacle
+            return true;
         }
     }
     return false;
@@ -590,7 +569,7 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('keyup', e => { if (e.key === 'ArrowDown') cat.ducking = false; });
 
-// ── Input – touch ─────────────────────────────────────────────────────────────
+// ── Input – touch op canvas ───────────────────────────────────────────────────
 let touchStartY = 0;
 
 canvas.addEventListener('touchstart', e => {
@@ -608,7 +587,19 @@ canvas.addEventListener('touchmove', e => {
 
 canvas.addEventListener('touchend', e => { e.preventDefault(); cat.ducking = false; }, { passive: false });
 
-// ── Duck button (mobile) ──────────────────────────────────────────────────────
+// ── Input – touch op overlay (FIX: overlay vangt tap op bij idle/dead) ────────
+overlay.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (state === 'idle' || state === 'dead') { startGame(); return; }
+    cat.jump();
+}, { passive: false });
+
+overlay.addEventListener('click', e => {
+    if (state === 'idle' || state === 'dead') { startGame(); return; }
+    cat.jump();
+});
+
+// ── Duck button (mobiel) ──────────────────────────────────────────────────────
 duckBtn.addEventListener('pointerdown',  e => { e.preventDefault(); cat.ducking = true;  });
 duckBtn.addEventListener('pointerup',    e => { e.preventDefault(); cat.ducking = false; });
 duckBtn.addEventListener('pointerleave', () => { cat.ducking = false; });
