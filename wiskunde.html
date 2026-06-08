@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MathZone – Wiskundeoefeningen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/wiskunde.css" />
+</head>
+<body>
+
+<!-- Background grid -->
+<div class="bg-grid"></div>
+
+<div class="wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="logo">MATH<span>ZONE</span></div>
+        <div class="score-board">
+            <div class="score-block">
+                <span class="score-label">SCORE</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="score-block">
+                <span class="score-label">HIGHSCORE</span>
+                <span class="score-value highlight" id="highscore">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main card -->
+    <main class="card" id="main-card">
+
+        <!-- Level selector -->
+        <div class="level-bar">
+            <button class="level-btn active" data-level="easy">Makkelijk</button>
+            <button class="level-btn" data-level="medium">Gemiddeld</button>
+            <button class="level-btn" data-level="hard">Moeilijk</button>
+        </div>
+
+        <!-- Question area -->
+        <section class="question-area">
+            <div class="question-meta">
+                <span class="op-badge" id="op-badge">+</span>
+                <span class="question-count" id="question-count">Vraag 1</span>
+            </div>
+            <div class="question-text" id="question-text">Bereken:</div>
+            <div class="equation" id="equation">— + — = ?</div>
+        </section>
+
+        <!-- Input area -->
+        <section class="input-area">
+            <input
+                    type="number"
+                    id="answer-input"
+                    class="answer-input"
+                    placeholder="Jouw antwoord..."
+                    autocomplete="off"
+            />
+            <button class="submit-btn" id="submit-btn">
+                <span>Controleer</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </section>
+
+        <!-- Feedback -->
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+
+        <!-- Stats bar -->
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-num" id="correct-count">0</span>
+                <span class="stat-label">Juist</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num" id="wrong-count">0</span>
+                <span class="stat-label">Fout</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num" id="streak">0</span>
+                <span class="stat-label">Reeks 🔥</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Confetti container -->
+    <div id="confetti-container"></div>
+
+</div>
+
+<script src="js/wiskunde.js"></script>
+</body>
+</html>
